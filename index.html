@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Animación de carga antes de mostrar imagen</title>
+  <style>
+    :root{
+      --skeleton: #b9cde2;
+    }
+    .loader {
+      position: fixed;
+      display: flex;
+      background: #fff;
+      z-index: 1000;
+    }
+    .skeleton{
+      position:relative; 
+      overflow:hidden; 
+      background:linear-gradient(180deg, var(--skeleton), var(--skeleton));
+      height: 400px; 
+      width: 800px;
+    }
+    .skeleton::after{
+      content:""; 
+      position:absolute; 
+      height: 400px; 
+      width: 800px;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+      transform:translateX(0); 
+      animation:shimmer 0.3s linear infinite;
+    }
+    @keyframes shimmer{ 100%{ transform:translateX(100%);} }
+    .hidden {
+      display: none;
+    }
+    .main-image {
+      max-width: 800px;
+      max-height: 400px;
+      display: block;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="loader" id="loader">
+      <div class="skeleton"></div>
+    </div>
+    <img src="https://picsum.photos/800/400" alt="Imagen grande" id="mainImage" class="main-image">
+  </div>
+
+
+  <script>
+    const loader = document.getElementById('loader');
+    const mainImage = document.getElementById('mainImage');
+
+    mainImage.onload = function() {
+      loader.classList.add('hidden');
+      mainImage.style.display = 'block';
+    };
+
+    // Por si la imagen ya está en caché
+    if (mainImage.complete) {
+      loader.classList.add('hidden');
+      mainImage.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
